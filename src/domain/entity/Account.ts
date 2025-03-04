@@ -1,12 +1,13 @@
-import Name from "./vo/Name";
-import Email from "./vo/Email";
-import Cpf from "./vo/Cpf";
-import CarPlate from "./vo/CarPlate";
-import Password from "./vo/Password";
-import UUID from "./vo/UUID";
+import CarPlate from "../vo/CarPlate";
+import Cpf from "../vo/Cpf";
+import Email from "../vo/Email";
+import Name from "../vo/Name";
+import Password from "../vo/Password";
+import UUID from "../vo/UUID";
 
 // Aggregate composto por a Entity Account e os VOs UUID, Name, Email, Cpf, carPlate, Password
 // Todo aggregate tem um Aggregate Root <AR>, e é a Entity que "lidera" o aggregate
+
 // Entity (porque tem identidade e pode sofrer mutação de estado)
 export default class Account {
     // VO (carrega um ou mais valores, é imutável)

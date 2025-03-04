@@ -1,7 +1,7 @@
-import Ride from "../../domain/Ride";
+import Ride from "../../domain/entity/Ride";
 import { inject } from "../di/Registry";
 import DatabaseConnection from "../database/DatabaseConnection";
-import Position from "../../domain/Position";
+import Position from "../../domain/entity/Position";
 
 // Interface Adapter
 export default interface RideRepository {

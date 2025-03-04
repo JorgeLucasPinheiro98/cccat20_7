@@ -1,4 +1,4 @@
-import Position from "../../domain/Position";
+import Position from "../../domain/entity/Position";
 import { inject } from "../../infra/di/Registry";
 import PositionRepository from "../../infra/repository/PositionRepository";
 import RideRepository from "../../infra/repository/RideRepository";

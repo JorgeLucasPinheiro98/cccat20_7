@@ -1,8 +1,8 @@
 import crypto from "crypto";
 import { AccountRepositoryDatabase } from "../../src/infra/repository/AccountRepository";
-import Account from "../../src/domain/Account";
 import { PgPromiseAdapter } from "../../src/infra/database/DatabaseConnection";
 import Registry from "../../src/infra/di/Registry";
+import Account from "../../src/domain/entity/Account";
 
 test("Deve salvar uma account", async function () {
     const databaseConnection = new PgPromiseAdapter();

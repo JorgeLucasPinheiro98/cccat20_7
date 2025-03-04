@@ -1,12 +1,11 @@
-import { validatePassword } from "../../src/domain/validatePassword";
+import Password from "../../src/domain/vo/Password";
 
 test.each([
     "asdFGH123",
     "asdG123456",
     "aG1aG129999"
 ])("Deve validar a senha %s", function (password: string) {
-    const isValid = validatePassword(password);
-    expect(isValid).toBe(true);
+    expect(new Password(password)).toBeDefined();
 });
 
 test.each([
@@ -17,6 +16,5 @@ test.each([
     "ASDFGHJKL",
     "asddfg123456"
 ])("Não deve validar a senha %s", function (password: string) {
-    const isValid = validatePassword(password);
-    expect(isValid).toBe(false);
+    expect(() => new Password(password)).toThrow(new Error("Invalid password"));
 });

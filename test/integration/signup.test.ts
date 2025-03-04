@@ -4,8 +4,8 @@ import GetAccount from "../../src/application/usecase/GetAccount";
 import Registry from "../../src/infra/di/Registry";
 import Signup from "../../src/application/usecase/signup";
 import sinon from "sinon";
-import Account from "../../src/domain/Account";
 import ORM from "../../src/infra/orm/ORM";
+import Account from "../../src/domain/entity/Account";
 
 let databaseConnection: DatabaseConnection;
 let signup: Signup;

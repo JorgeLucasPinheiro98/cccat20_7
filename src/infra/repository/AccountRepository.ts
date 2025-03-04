@@ -1,7 +1,7 @@
-import Account from "../../domain/Account";
 import { inject } from "../di/Registry";
 import DatabaseConnection from "../database/DatabaseConnection";
 import ORM, { AccountModel } from "../orm/ORM";
+import Account from "../../domain/entity/Account";
 
 export default interface AccountRepository {
     getAccountByEmail (email: string): Promise<Account | undefined>;

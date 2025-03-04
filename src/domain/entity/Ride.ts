@@ -1,8 +1,9 @@
 import Position from "./Position";
-import DistanceCalculator from "./service/DistanceCalculator";
-import FareCalculator from "./service/FareCalculator";
-import Coord from "./vo/Coord";
-import UUID from "./vo/UUID";
+import DistanceCalculator from "../service/DistanceCalculator";
+import FareCalculator from "../service/FareCalculator";
+import Coord from "../vo/Coord";
+import UUID from "../vo/UUID";
+import RideStatus, { RideStatusFactory } from "../vo/RideStatus";
 
 export default class Ride {
     private rideId: UUID;
@@ -10,6 +11,7 @@ export default class Ride {
     private driverId?: UUID;
     private from: Coord;
     private to: Coord;
+    private status: RideStatus;
 
     constructor (
         rideId: string,
@@ -21,7 +23,7 @@ export default class Ride {
         toLong: number,
         private fare: number,
         private distance: number,
-        private status: string,
+        status: string,
         readonly date: Date
     ) {
         this.rideId = new UUID(rideId);
@@ -29,6 +31,7 @@ export default class Ride {
         if (driverId) this.driverId = new UUID(driverId);
         this.from = new Coord(fromLat, fromLong);
         this.to = new Coord(toLat, toLong);
+        this.status = RideStatusFactory.create(status, this);
     }
 
     static create (
@@ -70,23 +73,25 @@ export default class Ride {
         this.driverId = new UUID(driverId);
     }
 
-    setStatus (status: string) {
+    setStatus (status: RideStatus) {
         this.status = status;
     }
 
     getStatus () {
-        return this.status;
+        return this.status.value;
     }
 
     accept (driverId: string) {
-        if (this.status !== "requested") throw new Error("Invalid status");
-        this.status = "accepted";
+        this.status.accept();
         this.setDriverId(driverId);
     }
 
     start () {
-        if (this.status !== "accepted") throw new Error("Invalid Status");
-        this.status = "in_progress";
+        this.status.start();
+    }
+
+    finish () {
+        this.status.finish();
     }
 
     getFare () {
