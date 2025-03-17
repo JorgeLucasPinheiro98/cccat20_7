@@ -7,6 +7,7 @@ import AcceptRide from "../../src/application/usecase/AcceptRide";
 import StartRide from "../../src/application/usecase/StartRide";
 import { PositionRepositoryDatabase } from "../../src/infra/repository/PositionRepository";
 import AccountGateway, { AccountGatewayHttp } from "../../src/infra/gateway/AccountGateway";
+import { AxiosAdapter } from "../../src/infra/http/HttpClient";
 
 let databaseConnection: DatabaseConnection;
 let requestRide: RequestRide;
@@ -19,6 +20,7 @@ beforeEach(() => {
     databaseConnection = new PgPromiseAdapter();
     Registry.getInstance().provide("databaseConnection", databaseConnection);
     accountGateway = new AccountGatewayHttp();
+    Registry.getInstance().provide("httpClient", new AxiosAdapter());
     Registry.getInstance().provide("accountGateway", accountGateway);
     const rideRepository = new RideRepositoryDatabase();
     Registry.getInstance().provide("rideRepository", rideRepository);

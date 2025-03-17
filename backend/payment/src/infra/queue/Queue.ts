@@ -18,11 +18,17 @@ export class RabbitMQAdapter implements Queue {
 
     async publish(exchange: string, input: any): Promise<void> {
         const channel = await this.connection.createChannel();
+        await channel.assertExchange("ride_completed", "direct", { durable: true });
+        await channel.assertQueue("ride_completed.process_payment", { durable: true });
+        await channel.bindQueue("ride_completed.process_payment", "ride_completed", "");
         channel.publish(exchange, "", Buffer.from(JSON.stringify(input)));
     }
 
     async consume(queue: string, callback: Function): Promise<void> {
         const channel = await this.connection.createChannel();
+        await channel.assertExchange("ride_completed", "direct", { durable: true });
+        await channel.assertQueue("ride_completed.process_payment", { durable: true });
+        await channel.bindQueue("ride_completed.process_payment", "ride_completed", "");
         channel.consume(queue, async (msg: any) => {
             const input = msg.content.toString();
             await callback(input);

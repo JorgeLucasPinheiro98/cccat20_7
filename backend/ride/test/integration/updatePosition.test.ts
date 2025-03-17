@@ -8,6 +8,7 @@ import StartRide from "../../src/application/usecase/StartRide";
 import UpdatePosition from "../../src/application/usecase/UpdatePosition";
 import { PositionRepositoryDatabase } from "../../src/infra/repository/PositionRepository";
 import AccountGateway, { AccountGatewayHttp } from "../../src/infra/gateway/AccountGateway";
+import { AxiosAdapter } from "../../src/infra/http/HttpClient";
 
 let databaseConnection: DatabaseConnection;
 let requestRide: RequestRide;
@@ -22,6 +23,7 @@ beforeEach(() => {
     Registry.getInstance().provide("databaseConnection", databaseConnection);
     const rideRepository = new RideRepositoryDatabase();
     accountGateway = new AccountGatewayHttp();
+    Registry.getInstance().provide("httpClient", new AxiosAdapter());
     Registry.getInstance().provide("accountGateway", accountGateway);
     Registry.getInstance().provide("rideRepository", rideRepository);
     const positionRepository = new PositionRepositoryDatabase();
