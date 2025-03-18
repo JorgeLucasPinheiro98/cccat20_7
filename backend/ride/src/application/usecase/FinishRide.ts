@@ -19,7 +19,7 @@ export default class FinishRide {
         const ride = await this.rideRepository.getRideById(input.rideId);
         ride.finish();
         await this.rideRepository.updateRide(ride);
-        const event = { externalId: input.rideId, type: "ride", amount: ride.getFare(), creditCardToken: "" };
+        const event = { rideId: input.rideId, externalId: input.rideId, type: "ride", amount: ride.getFare(), creditCardToken: "", status: ride.getStatus() };
         // await this.paymentGateway.processPayment(event);
         await this.queue.publish("ride_completed", event);
     }

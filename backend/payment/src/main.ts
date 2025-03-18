@@ -6,6 +6,8 @@ import ProcessPayment from "./application/usecase/ProcessPayment";
 import PaymentController from "./infra/controller/PaymentController";
 import { RabbitMQAdapter } from "./infra/queue/Queue";
 import QueueController from "./infra/controller/QueueController";
+import { TransactionRepositoryDatabase } from "./infra/repository/TransactionRepository";
+import GetTransactionsByExternalId from "./application/usecase/GetTransactionsByExternalId";
 
 // Main - Composition Root
 async function main () {
@@ -14,7 +16,9 @@ async function main () {
     const httpServer = new ExpressAdapter();
     // const httpServer = new HapiAdapter();
     Registry.getInstance().provide("databaseConnection", databaseConnection);
+    Registry.getInstance().provide("transactionRepository", new TransactionRepositoryDatabase());
     Registry.getInstance().provide("processPayment", processPayment);
+    Registry.getInstance().provide("getTransactionsByExternalId", new GetTransactionsByExternalId());
     Registry.getInstance().provide("httpServer", httpServer);
     new PaymentController();
     httpServer.listen(3002);

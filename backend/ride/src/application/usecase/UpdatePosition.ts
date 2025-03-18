@@ -5,12 +5,15 @@ import Position from "../../domain/entity/Position";
 import PositionRepository from "../../infra/repository/PositionRepository";
 import DistanceCalculator from "../../domain/service/DistanceCalculator";
 import FareCalculator, { FareCalculatorFactory } from "../../domain/service/FareCalculator";
+import Queue from "../../infra/queue/Queue";
 
 export default class UpdatePosition {
     @inject("positionRepository")
     positionRepository!: PositionRepository;
     @inject("rideRepository")
     rideRepository!: RideRepository;
+    @inject("queue")
+    queue!: Queue;
 
     async execute (input: Input): Promise<void> {
         const lastPosition = await this.positionRepository.getLastPositionByRideId(input.rideId);
@@ -24,6 +27,7 @@ export default class UpdatePosition {
             ride.setFare(ride.getFare() + fare);
             await this.rideRepository.updateRide(ride);
         }
+        await this.queue.publish("ride_position_updated", { rideId: ride.getRideId(), fare: ride.getFare(), distance: ride.getDistance(), status: ride.getStatus() });
     }
 }
 

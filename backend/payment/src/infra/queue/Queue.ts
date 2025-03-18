@@ -30,7 +30,7 @@ export class RabbitMQAdapter implements Queue {
         await channel.assertQueue("ride_completed.process_payment", { durable: true });
         await channel.bindQueue("ride_completed.process_payment", "ride_completed", "");
         channel.consume(queue, async (msg: any) => {
-            const input = msg.content.toString();
+            const input = JSON.parse(msg.content.toString());
             await callback(input);
             channel.ack(msg);
         });
